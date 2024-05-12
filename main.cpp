@@ -11,6 +11,7 @@ class Reg_Log {
 	bool reg_or_log;
 	std::string username;
 	std::string password;
+	std::string word;
 public:
 	void set_username() {
 		std::cout << "Input your username: "; std::cin >> username;
@@ -18,21 +19,28 @@ public:
 	void set_password() {
 		std::cout << "Input your password: "; std::cin >> password;
 	}
+	void set_word() {
+		std::cout << "Input your word for help: "; std::cin >> word;
+	}
 	std::string get_username() {
 		return this->username;
 	}
 	std::string get_password() {
 		return this->password;
 	}
-
+	std::string get_word() {
+		return this->word;
+	}
 	bool get_reg_or_log() {
 		return this->reg_or_log;
 	}
+
 	void registration() {
 		set_username();
 		set_password();
+		set_word();
 		std::ofstream fail("D:\\MyProgects\\Reg_Log\\" + get_username() + ".txt");
-		fail << get_username() << std::endl << get_password();
+		fail << get_username() << std::endl << get_password() << std::endl << get_word();
 		fail.close();
 	}
 	void login() {
@@ -44,9 +52,13 @@ public:
 			std::string b_password;
 			fail >> b_username >> b_password;
 			if (b_password == get_password()) std::cout << "You are logged!" << std::endl;
-			else std::cout << "Uncorrect password!";
+			else {
+				std::cout << "Uncorrect password!";
+				std::cout << "Would you recover your account?" << std::endl;
+
+			}
 		}
-		else std::cout << "Your account don't registration!";
+		else std::cout << "Your account don't registration!" << std::endl;
 	}
 	void program() {
 		std::cout << "Input your variant: \nRegistation - 1 \nLogin - 2" << std::endl;
