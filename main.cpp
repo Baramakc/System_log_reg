@@ -3,8 +3,9 @@
 
 /*  1) Сделать в потоках начало программу и подгрузку в map(чтобы не было одинаковых имён при регестрации)
 	И там в самом map искать пользователя. Из txt файлов идёт подгрузка и загрузка новых пользователей
-	2) Изменения пароля и логина
+	2) Удаление при перерегестрации
 	3) Может быть если забыл логин или пароль сделать проверку
+	4)
 */	
 
 class Reg_Log {
@@ -42,23 +43,43 @@ public:
 		std::ofstream fail("D:\\MyProgects\\Reg_Log\\" + get_username() + ".txt");
 		fail << get_username() << std::endl << get_password() << std::endl << get_word();
 		fail.close();
+		std::cout << "You have registered";
 	}
 	void login() {
 		set_username();
 		set_password();
 		std::ifstream fail("D:\\MyProgects\\Reg_Log\\" + get_username() + ".txt");
 		if (fail.is_open()) {
-			std::string b_username;
-			std::string b_password;
-			fail >> b_username >> b_password;
+			std::string b_username, b_password, b_word;
+			fail >> b_username >> b_password >> b_word;
+
 			if (b_password == get_password()) std::cout << "You are logged!" << std::endl;
 			else {
-				std::cout << "Uncorrect password!";
-				std::cout << "Would you recover your account?" << std::endl;
-
+				while (true) {
+					std::cout << "Uncorrect password!" << std::endl;
+					std::cout << "Input your variant: \nInput password again - 1 \nRecreate account - 2\n";
+					int choise; std::cin >> choise;
+					if (choise == 1) {
+						login();
+						break;
+					}
+					else if (choise == 2) {
+						std::string exam_word;
+						std::cout << "Input your word: "; std::cin >> exam_word;
+						if (exam_word == b_word) {
+							registration();
+							break;
+						}
+						else {
+							std::cout << "Uncorrect word!";
+							break;
+						}
+					}
+				}
+				
 			}
 		}
-		else std::cout << "Your account don't registration!" << std::endl;
+		else std::cout << "Your username don't registration!" << std::endl;
 	}
 	void program() {
 		std::cout << "Input your variant: \nRegistation - 1 \nLogin - 2" << std::endl;
